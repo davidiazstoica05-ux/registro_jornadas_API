@@ -1,0 +1,8 @@
+### GET all departments
+
+GET http://localhost:8080/tempus/api/department
+
+
+
+
+###
