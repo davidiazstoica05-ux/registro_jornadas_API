@@ -24,13 +24,6 @@ import java.util.List;
 @RestController
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-
-    private final ProjectInfoProperties projectInfoProperties;
-
-    public GlobalExceptionHandler(ProjectInfoProperties projectInfoProperties) {
-        this.projectInfoProperties = projectInfoProperties;
-    }
-
     //El handler que maneja la excion de DepartmentNotFound
     @ExceptionHandler
     public ProblemDetail handleDepartmentNotFound(EntityNotFoundException ex){
