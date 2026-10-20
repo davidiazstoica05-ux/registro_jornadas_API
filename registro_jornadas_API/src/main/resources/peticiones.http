@@ -1,0 +1,115 @@
+### GET all departments
+
+GET http://localhost:8080/tempus/api/department
+
+###
+
+### GET a department by id
+
+
+GET http://localhost:8080/tempus/api/department/15
+
+
+###
+
+
+
+### Error 1 = POST a new department without name
+
+POST http://localhost:8080/tempus/api/department
+Content-Type: application/json
+
+{
+  "name": "",
+  "budget": 1000
+}
+
+
+
+###
+
+### Error 2 = POST a new department with a negative badge
+
+POST http://localhost:8080/tempus/api/department
+Content-Type: application/json
+
+{
+  "name": "Videojuegos",
+  "budget": -1
+}
+
+
+
+###
+
+
+### Error 3 = POST a new department with a negative badge and empty name
+
+POST http://localhost:8080/tempus/api/department
+Content-Type: application/json
+
+{
+  "name": "",
+  "budget": -1
+}
+
+
+
+###
+
+### POST a new department
+
+POST http://localhost:8080/tempus/api/department
+Content-Type: application/json
+
+{
+  "name": "Videojuegos",
+  "budget": 10000
+}
+
+###
+
+### Editar departamento (caso correcto, debe dar 200)
+PUT http://localhost:8080/tempus/api/department/1
+Content-Type: application/json
+
+{
+  "name": "videojuegos2",
+  "budget": 150.0
+}
+
+### Editar con nombre vacío (debe dar 400 con invalid-params)
+PUT http://localhost:8080/tempus/api/department/1
+Content-Type: application/json
+
+{
+  "name": "",
+  "budget": 150.0
+}
+
+### Editar con presupuesto negativo (debe dar 400)
+PUT http://localhost:8080/tempus/api/department/1
+Content-Type: application/json
+
+{
+  "name": "videojuegos2",
+  "budget": -5
+}
+
+### Editar un id que no existe (debe dar 404)
+PUT http://localhost:8080/tempus/api/department/999
+Content-Type: application/json
+
+{
+  "name": "nuevo",
+  "budget": 100.0
+}
+
+### Borrar departamento (correcto, normalmente 204)
+DELETE http://localhost:8080/tempus/api/department/1
+
+### Borrar un id que no existe (debe dar 404)
+DELETE http://localhost:8080/tempus/api/department/999
+
+
+
