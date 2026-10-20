@@ -1,6 +1,9 @@
 package com.salesianos.registro_jornadas_api.error;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.salesianos.registro_jornadas_api.error.Duplicated.DuplicatedClockingException;
+import com.salesianos.registro_jornadas_api.error.notfound.DepartmentNotFoundException;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ElementKind;
@@ -14,6 +17,7 @@ import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -21,12 +25,12 @@ import javax.swing.text.html.parser.Entity;
 import java.net.URI;
 import java.util.List;
 
-@RestController
+@RestControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     //El handler que maneja la excion de DepartmentNotFound
     @ExceptionHandler
-    public ProblemDetail handleDepartmentNotFound(EntityNotFoundException ex){
+    public ProblemDetail handleDepartmentNotFound(DepartmentNotFoundException ex){
 
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
         problem.setTitle("Recurso no encontrado");
@@ -40,7 +44,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler
-    public  ProblemDetail handleDuplicatedClocking(EntityNotFoundException ex){
+    public  ProblemDetail handleDuplicatedClocking(DuplicatedClockingException ex){
 
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
         problem.setTitle("Recurso no encontrado");

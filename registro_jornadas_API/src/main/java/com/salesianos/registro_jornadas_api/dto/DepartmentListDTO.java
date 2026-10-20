@@ -1,15 +1,28 @@
 package com.salesianos.registro_jornadas_api.dto;
 
 import com.salesianos.registro_jornadas_api.model.Department;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.math.BigDecimal;
 
+
+@Schema(
+        name = "DepartmentListDTO",
+        description = "A list of diferents departments "
+)
 public record DepartmentListDTO(
 
+        @Schema(
+                description = "Department's name ",
+                example = "Develop"
+        )
+        String name,
 
-    Long idDepartment,
-    String name,
-    BigDecimal budget
+        @Schema(
+                description = "Department's budget",
+                example = "2000"
+        )
+        BigDecimal budget
 ){
 
 
@@ -19,7 +32,6 @@ public record DepartmentListDTO(
         return new DepartmentListDTO(
 
 
-                department.getIdDepartment(),
                 department.getName(),
                 department.getBudget()
 
