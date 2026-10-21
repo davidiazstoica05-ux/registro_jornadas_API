@@ -75,7 +75,7 @@ public class EmployeeController {
 
 
 
-        return ResponseEntity.ok(EmployeeDTO.of(employeeService.addEmployee( editEmployeeDTO)));
+        return ResponseEntity.status(201).body(EmployeeDTO.of(employeeService.addEmployee( editEmployeeDTO)));
 
 
     }
@@ -153,7 +153,7 @@ public class EmployeeController {
             @Valid @RequestBody EditEmployeeDTO employeeDTO
     ){
 
-        return ResponseEntity.ok(
+        return ResponseEntity.status(201).body(
 
                 EmployeeDTO.of(employeeService.updateEmployee(id, employeeDTO))
 
@@ -187,7 +187,7 @@ public class EmployeeController {
 
     ){
 
-        return ResponseEntity.ok().body(EmployeeDTO.of(employeeService.switchDepartment(employeeId , departmentId)));
+        return ResponseEntity.status(201).body(EmployeeDTO.of(employeeService.switchDepartment(employeeId , departmentId)));
 
 
 

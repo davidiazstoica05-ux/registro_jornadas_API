@@ -131,7 +131,7 @@ public class DepartmentController {
             @Valid @RequestBody EditDepartmentDTO department
     ){
 
-    return ResponseEntity.ok(
+    return ResponseEntity.status(201).body(
 
             DepartmentDTO.of(departmentService.updateDepartment(id, department))
 

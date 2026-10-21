@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 public @interface BudgetNotExceed {
 
 
-    String message() default "The department's name has to be unique";
+    String message() default "The budget of this department is exceeded ";
 
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

@@ -293,3 +293,80 @@ PUT http://localhost:8080/api/v1/employee/1/department/999
 
 ### Error: invalid employee id (400)
 PUT http://localhost:8080/api/v1/employee/0/department/2
+
+
+### BudgetNotExceed
+
+### HU-07: pruebas del presupuesto
+### Se asume la BD recien creada por el DataSeed (ddl-auto=create-drop): reinicia la app antes de empezar.
+### Desarrollo (id 1): budget 10000, salarios 9500 -> caben 500 mas
+### Recursos Humanos (id 2): budget 6000, salarios 5300 -> caben 700 mas
+### Marketing (id 3): budget 5000, sin empleados
+### Pablo (id 6): 2200, sin departamento. Ana (id 1): 3500, en Desarrollo.
+### Ejecuta en este orden: cada exito consume presupuesto.
+
+### 1. No cabe por 1 euro (400, mensaje del .properties en invalid-params)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Nuria Campos Gil",
+  "position": "Tester",
+  "salary": 501.00,
+  "departmentId": 1
+}
+
+### 2. Cabe EXACTAMENTE en el limite (201). Si da 400, el <= 0 esta mal
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Nuria Campos Gil",
+  "position": "Tester",
+  "salary": 500.00,
+  "departmentId": 1
+}
+
+### 3. Desarrollo ya esta lleno: 1 euro mas no cabe (400)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Raul Ortega Sanz",
+  "position": "Tester",
+  "salary": 1.00,
+  "departmentId": 1
+}
+
+### 4. Sin departamento (201, no hay presupuesto que comprobar)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Raul Ortega Sanz",
+  "position": "Tester",
+  "salary": 99999.00
+}
+
+### 5. Departamento que no existe (404 del servicio, no 400)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Raul Ortega Sanz",
+  "position": "Tester",
+  "salary": 1000.00,
+  "departmentId": 999
+}
+
+### 6. Salario negativo con departamento (400, solo el error del @Positive, sin duplicados)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Raul Ortega Sanz",
+  "position": "Tester",
+  "salary": -5.00,
+  "departmentId": 1
+}
+
