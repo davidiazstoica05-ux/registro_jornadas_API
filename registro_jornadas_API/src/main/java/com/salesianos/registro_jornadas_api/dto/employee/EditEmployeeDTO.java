@@ -2,6 +2,7 @@ package com.salesianos.registro_jornadas_api.dto.employee;
 
 import com.salesianos.registro_jornadas_api.model.Department;
 import com.salesianos.registro_jornadas_api.model.Employee;
+import com.salesianos.registro_jornadas_api.validation.BudgetNotExceed.BudgetNotExceed;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ import java.util.Optional;
         name = "EditEmployeeDTO",
         description = "Input DTO to create or update an employee"
 )
+@BudgetNotExceed
 public record EditEmployeeDTO(
 
 

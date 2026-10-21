@@ -69,6 +69,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+    @ExceptionHandler
+    public ProblemDetail handleBudgetExceeded(BudgetExceededException ex) {
+
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        problem.setTitle("Budget exceeded");
+        problem.setDetail(ex.getMessage());
+        problem.setType(URI.create("https://example.com/errors/budget-exceeded"));
+
+        return problem;
+    }
+
 
     @Override
     protected @Nullable ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
