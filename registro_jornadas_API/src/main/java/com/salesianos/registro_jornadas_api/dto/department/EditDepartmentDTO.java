@@ -1,4 +1,4 @@
-package com.salesianos.registro_jornadas_api.dto;
+package com.salesianos.registro_jornadas_api.dto.department;
 
 import com.salesianos.registro_jornadas_api.model.Department;
 import com.salesianos.registro_jornadas_api.validation.UniqueDepartmentName;
