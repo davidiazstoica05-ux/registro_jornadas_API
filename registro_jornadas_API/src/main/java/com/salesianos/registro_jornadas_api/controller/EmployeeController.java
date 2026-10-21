@@ -177,6 +177,24 @@ public class EmployeeController {
     }
 
 
+    @PutMapping({"/{employeeId}/department", "/{employeeId}/department/{departmentId}"})
+    public ResponseEntity<EmployeeDTO> switchDepartment(
+
+            @Min(value = 1)
+            @PathVariable Long employeeId,
+             @Min(value = 1)
+             @PathVariable (required = false) Long departmentId
+
+    ){
+
+        return ResponseEntity.ok().body(EmployeeDTO.of(employeeService.switchDepartment(employeeId , departmentId)));
+
+
+
+
+    }
+
+
 
 
 
