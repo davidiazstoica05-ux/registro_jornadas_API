@@ -8,6 +8,7 @@ import com.salesianos.registro_jornadas_api.model.Department;
 import com.salesianos.registro_jornadas_api.model.Employee;
 import com.salesianos.registro_jornadas_api.repository.DepartmentRepository;
 import com.salesianos.registro_jornadas_api.repository.EmployeeRepository;
+import com.salesianos.registro_jornadas_api.validation.BudgetNotExceed.BudgetNotExceed;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -93,6 +94,7 @@ public class EmployeeService {
     }
 
 
+    
     public Employee switchDepartment (Long employeeId, Long departmentId){
 
 
@@ -115,6 +117,8 @@ public class EmployeeService {
 
 
     }
+
+
 
 
 
