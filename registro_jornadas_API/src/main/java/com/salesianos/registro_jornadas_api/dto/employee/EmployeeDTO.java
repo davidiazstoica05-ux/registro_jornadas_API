@@ -12,14 +12,10 @@ import java.math.BigDecimal;
 public record EmployeeDTO(
 
 
-        @NotBlank(message = "{employee.fullname.notblank}")
-        @Pattern(regexp = "^\\p{L}+([ '\\-]\\p{L}+)+$", message = "{employee.fullname.pattern}")
         String fullName,
 
-        @NotBlank (message = "{employee.position.notblank}")
         String position,
 
-        @Positive (message = "{employee.salary.positive}")
         BigDecimal salary,
 
 

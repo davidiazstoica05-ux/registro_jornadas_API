@@ -3,6 +3,7 @@ package com.salesianos.registro_jornadas_api.error;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.salesianos.registro_jornadas_api.error.Duplicated.DuplicatedClockingException;
 import com.salesianos.registro_jornadas_api.error.notfound.DepartmentNotFoundException;
+import com.salesianos.registro_jornadas_api.error.notfound.EmployeeNotFoundException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
@@ -46,6 +47,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler
     public  ProblemDetail handleDuplicatedClocking(DuplicatedClockingException ex){
 
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        problem.setTitle("Recurso no encontrado");
+
+        problem.setDetail(ex.getMessage());
+        problem.setType(URI.create("https://example.com/errors/not-found"));
+
+        return problem;
+
+    }
+
+    @ExceptionHandler
+    public  ProblemDetail handleEmployeeNotFoundException(EmployeeNotFoundException ex){
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
         problem.setTitle("Recurso no encontrado");
 

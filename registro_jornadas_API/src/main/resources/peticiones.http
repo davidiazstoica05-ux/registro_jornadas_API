@@ -215,6 +215,7 @@ Content-Type: application/json
   "departmentId": 1
 }
 
+### Queda por arreglar este
 ### PUT without department: it removes it (200)
 PUT http://localhost:8080/api/v1/employee/1
 Content-Type: application/json

@@ -2,17 +2,17 @@ package com.salesianos.registro_jornadas_api.service;
 
 import com.salesianos.registro_jornadas_api.dto.employee.EditEmployeeDTO;
 import com.salesianos.registro_jornadas_api.error.notfound.DepartmentNotFoundException;
-import com.salesianos.registro_jornadas_api.error.notfound.EmployeesNotFoundException;
+import com.salesianos.registro_jornadas_api.error.notfound.EmployeeNotFoundException;
 import com.salesianos.registro_jornadas_api.model.Department;
 import com.salesianos.registro_jornadas_api.model.Employee;
 import com.salesianos.registro_jornadas_api.repository.DepartmentRepository;
 import com.salesianos.registro_jornadas_api.repository.EmployeeRepository;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,21 +25,29 @@ public class EmployeeService {
     public  Employee getById(Long id) {
 
 
-    return employeeRepository.findById(id).orElseThrow(() -> new EmployeesNotFoundException(id));
+    return employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
 
 
     }
 
 
-    public Employee addEmployee(Department department, EditEmployeeDTO editEmployeeDTO){
+    public Employee addEmployee( EditEmployeeDTO editEmployeeDTO){
 
 
-       Department department1 = departmentRepository.findById(department
-                                                    .getIdDepartment())
-                                                    .orElseThrow(() -> new DepartmentNotFoundException(editEmployeeDTO.departmentId()));
+        Department department = null;
+
+        if (editEmployeeDTO.departmentId() != null){
+
+            department = departmentRepository.findById(editEmployeeDTO.departmentId())
+                    .orElseThrow(() -> new DepartmentNotFoundException(
+                            editEmployeeDTO.departmentId()
+                    ));
+
+        }
 
 
-      return employeeRepository.save(editEmployeeDTO.to(department1));
+
+      return employeeRepository.save(editEmployeeDTO.to(department));
 
     }
 
@@ -65,7 +73,7 @@ public class EmployeeService {
                                                       .orElseThrow(() -> new DepartmentNotFoundException(id)));
                                       return employeeRepository.save(e);
                                   })
-                .orElseThrow(() -> new EmployeesNotFoundException(id));
+                .orElseThrow(() -> new EmployeeNotFoundException(id));
 
 
 

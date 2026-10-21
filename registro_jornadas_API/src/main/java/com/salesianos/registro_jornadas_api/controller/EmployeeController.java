@@ -17,7 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/api/v1/employee")
+@RestController
+@RequestMapping("/api/v1/employee")
 @RequiredArgsConstructor
 public class EmployeeController {
 
@@ -32,7 +33,7 @@ public class EmployeeController {
 
 
 
-     return ResponseEntity.ok(EmployeeDTO.of(employeeService.addEmployee(department, editEmployeeDTO)));
+     return ResponseEntity.ok(EmployeeDTO.of(employeeService.addEmployee( editEmployeeDTO)));
 
 
     }
@@ -51,7 +52,7 @@ public class EmployeeController {
 
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<EmployeeDTO> getEmployeeById( @PathVariable @Min(value = 1) Long id ){
 
 
@@ -65,6 +66,7 @@ public class EmployeeController {
 
     }
 
+    @PutMapping("/{id}")
     public ResponseEntity<EmployeeDTO> updateDepartment(
 
             @PathVariable @Min(value = 1) Long id,
@@ -79,6 +81,7 @@ public class EmployeeController {
 
     }
 
+    @DeleteMapping("/{id}")
     public ResponseEntity<EmployeeDTO> deleteEmployee(
 
             @PathVariable @Min(value = 1) Long id
