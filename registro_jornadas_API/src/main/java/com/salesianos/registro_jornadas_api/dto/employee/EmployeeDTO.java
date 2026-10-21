@@ -4,18 +4,22 @@ package com.salesianos.registro_jornadas_api.dto.employee;
 import com.salesianos.registro_jornadas_api.dto.department.DepartmentDTO;
 import com.salesianos.registro_jornadas_api.model.Employee;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
 
 public record EmployeeDTO(
 
 
-
+        @NotBlank(message = "{employee.fullname.notblank}")
+        @Pattern(regexp = "^\\p{L}+([ '\\-]\\p{L}+)+$", message = "{employee.fullname.pattern}")
         String fullName,
 
-
+        @NotBlank (message = "{employee.position.notblank}")
         String position,
 
+        @Positive (message = "{employee.salary.positive}")
         BigDecimal salary,
 
 

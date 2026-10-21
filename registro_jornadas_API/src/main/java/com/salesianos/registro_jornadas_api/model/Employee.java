@@ -24,6 +24,7 @@ public class Employee {
 
     BigDecimal salary;
 
+
     @ManyToOne
     @JoinColumn(name = "idDepartment")
     Department department;

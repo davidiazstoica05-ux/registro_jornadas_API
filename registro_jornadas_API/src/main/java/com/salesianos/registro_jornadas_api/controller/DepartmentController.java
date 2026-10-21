@@ -146,14 +146,14 @@ public class DepartmentController {
                     content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDetail.class)))
     })
     @DeleteMapping("{id}")
-    public ResponseEntity<DepartmentDTO> deleteDepartmente(
+    public ResponseEntity<DepartmentDTO> deleteDepartment(
 
             @PathVariable @Min(value = 1) Long id
 
             ){
 
 
-        departmentService.deleteProduct(id);
+        departmentService.deleteDepartment(id);
         return ResponseEntity.noContent().build();
 
 

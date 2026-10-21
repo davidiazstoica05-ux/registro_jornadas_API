@@ -24,6 +24,7 @@ public class Clocking {
 
     Type type;
 
+    //Reflexionar sobre relacion bidireccional con empleado
     @ManyToOne
     @JoinColumn(name = "idEmpleado" )
     Employee employee;

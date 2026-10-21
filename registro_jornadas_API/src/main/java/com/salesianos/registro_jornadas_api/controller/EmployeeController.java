@@ -1,12 +1,15 @@
 package com.salesianos.registro_jornadas_api.controller;
 
+import com.salesianos.registro_jornadas_api.dto.department.DepartmentDTO;
 import com.salesianos.registro_jornadas_api.dto.department.DepartmentListDTO;
+import com.salesianos.registro_jornadas_api.dto.department.EditDepartmentDTO;
 import com.salesianos.registro_jornadas_api.dto.employee.EditEmployeeDTO;
 import com.salesianos.registro_jornadas_api.dto.employee.EmployeeDTO;
 import com.salesianos.registro_jornadas_api.model.Department;
 import com.salesianos.registro_jornadas_api.model.Employee;
 import com.salesianos.registro_jornadas_api.service.EmployeeService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +51,45 @@ public class EmployeeController {
 
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<EmployeeDTO> getEmployeeById( @PathVariable @Min(value = 1) Long id ){
 
+
+        return ResponseEntity.ok(
+
+                EmployeeDTO.of(employeeService.getById(id))
+
+        );
+
+
+
+    }
+
+    public ResponseEntity<EmployeeDTO> updateDepartment(
+
+            @PathVariable @Min(value = 1) Long id,
+            @Valid @RequestBody EditEmployeeDTO employeeDTO
+    ){
+
+        return ResponseEntity.ok(
+
+                EmployeeDTO.of(employeeService.updateEmployee(id, employeeDTO))
+
+        );
+
+    }
+
+    public ResponseEntity<EmployeeDTO> deleteEmployee(
+
+            @PathVariable @Min(value = 1) Long id
+
+    ){
+
+        employeeService.deleteEmployee(id);
+        return ResponseEntity.noContent().build();
+
+
+    }
 
 
 

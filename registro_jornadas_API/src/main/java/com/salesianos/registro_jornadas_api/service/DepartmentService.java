@@ -62,7 +62,7 @@ public class DepartmentService {
 
     }
 
-    public void deleteProduct(Long id){
+    public void deleteDepartment(Long id){
 
 
 
@@ -70,7 +70,7 @@ public class DepartmentService {
 
             List<Employee> employees = employeeRepository.getByDepartment_IdDepartment(id);
 
-            employees.stream()
+            employees
                     .forEach( e -> e.setDepartment(null));
 
             departmentRepository.deleteById(id);
