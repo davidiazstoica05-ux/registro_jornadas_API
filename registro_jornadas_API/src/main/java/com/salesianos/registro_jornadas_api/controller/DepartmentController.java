@@ -1,8 +1,8 @@
 package com.salesianos.registro_jornadas_api.controller;
 
-import com.salesianos.registro_jornadas_api.dto.DepartmentDTO;
-import com.salesianos.registro_jornadas_api.dto.DepartmentListDTO;
-import com.salesianos.registro_jornadas_api.dto.EditDepartmentDTO;
+import com.salesianos.registro_jornadas_api.dto.department.DepartmentDTO;
+import com.salesianos.registro_jornadas_api.dto.department.DepartmentListDTO;
+import com.salesianos.registro_jornadas_api.dto.department.EditDepartmentDTO;
 import com.salesianos.registro_jornadas_api.model.Department;
 import com.salesianos.registro_jornadas_api.service.DepartmentService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/tempus/api/department")
+@RequestMapping("/api/v1/department")
 @RequiredArgsConstructor
 @Tag(name = "Department Controller", description = "A department's controller")
 public class DepartmentController {
@@ -146,14 +146,14 @@ public class DepartmentController {
                     content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDetail.class)))
     })
     @DeleteMapping("{id}")
-    public ResponseEntity<DepartmentDTO> deleteDepartmente(
+    public ResponseEntity<DepartmentDTO> deleteDepartment(
 
             @PathVariable @Min(value = 1) Long id
 
             ){
 
 
-        departmentService.deleteProduct(id);
+        departmentService.deleteDepartment(id);
         return ResponseEntity.noContent().build();
 
 

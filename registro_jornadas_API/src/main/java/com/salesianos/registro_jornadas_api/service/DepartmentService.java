@@ -1,6 +1,6 @@
 package com.salesianos.registro_jornadas_api.service;
 
-import com.salesianos.registro_jornadas_api.dto.EditDepartmentDTO;
+import com.salesianos.registro_jornadas_api.dto.department.EditDepartmentDTO;
 import com.salesianos.registro_jornadas_api.error.notfound.DepartmentNotFoundException;
 import com.salesianos.registro_jornadas_api.model.Department;
 import com.salesianos.registro_jornadas_api.model.Employee;
@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,9 +20,9 @@ public class DepartmentService {
 
     public List<Department> getAllDepartments(){
 
-        List<Department> result = departmentRepository.findAll();
+        return departmentRepository.findAll();
 
-        return result;
+
 
     }
 
@@ -63,7 +62,7 @@ public class DepartmentService {
 
     }
 
-    public void deleteProduct(Long id){
+    public void deleteDepartment(Long id){
 
 
 
@@ -71,7 +70,7 @@ public class DepartmentService {
 
             List<Employee> employees = employeeRepository.getByDepartment_IdDepartment(id);
 
-            employees.stream()
+            employees
                     .forEach( e -> e.setDepartment(null));
 
             departmentRepository.deleteById(id);
