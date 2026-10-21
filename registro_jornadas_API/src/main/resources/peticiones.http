@@ -275,3 +275,21 @@ DELETE http://localhost:8080/api/v1/employee/2
 
 ### Error: DELETE an employee that does not exist (404)
 DELETE http://localhost:8080/api/v1/employee/999
+
+
+
+### ASSIGN
+### Assign department 2 to employee 1 (200)
+PUT http://localhost:8080/api/v1/employee/1/department/2
+
+### Remove the department from employee 1 (200, department null)
+PUT http://localhost:8080/api/v1/employee/1/department
+
+### Error: employee that does not exist (404)
+PUT http://localhost:8080/api/v1/employee/999/department/2
+
+### Error: department that does not exist (404)
+PUT http://localhost:8080/api/v1/employee/1/department/999
+
+### Error: invalid employee id (400)
+PUT http://localhost:8080/api/v1/employee/0/department/2

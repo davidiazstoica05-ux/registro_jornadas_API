@@ -1,6 +1,7 @@
 package com.salesianos.registro_jornadas_api.service;
 
 import com.salesianos.registro_jornadas_api.dto.employee.EditEmployeeDTO;
+import com.salesianos.registro_jornadas_api.dto.employee.EmployeeDTO;
 import com.salesianos.registro_jornadas_api.error.notfound.DepartmentNotFoundException;
 import com.salesianos.registro_jornadas_api.error.notfound.EmployeeNotFoundException;
 import com.salesianos.registro_jornadas_api.model.Department;
@@ -9,7 +10,10 @@ import com.salesianos.registro_jornadas_api.repository.DepartmentRepository;
 import com.salesianos.registro_jornadas_api.repository.EmployeeRepository;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -86,6 +90,32 @@ public class EmployeeService {
 
 
 
+    }
+
+
+    public Employee switchDepartment (Long employeeId, Long departmentId){
+
+
+        return employeeRepository.findById(employeeId)
+                                    .map(e -> {
+
+                                        if (departmentId == null) {
+                                            e.setDepartment(null);
+                                        } else {
+                                            e.setDepartment(departmentRepository.findById(departmentId)
+                                                    .orElseThrow(() -> new DepartmentNotFoundException(departmentId)
+                                                    )
+                                            );
+                                        }
+
+                                        return employeeRepository.save(e);
+
+                                    })
+                .orElseThrow(() -> new EmployeeNotFoundException(employeeId));
+
 
     }
+
+
+
 }
