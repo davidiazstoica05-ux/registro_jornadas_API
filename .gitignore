@@ -1,0 +1,4 @@
+# H2 database files
+db/
+*.mv.db
+*.trace.db
