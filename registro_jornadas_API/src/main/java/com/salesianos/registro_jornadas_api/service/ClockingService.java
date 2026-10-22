@@ -60,7 +60,7 @@ public class ClockingService {
         return clockingRepository.save(clocking);
     }
 
-    
+
     public List<Clocking> getAllClocks(Long employeeID){
 
 
