@@ -1,0 +1,17 @@
+### 1. Primer fichaje del empleado 2 -> 201/200, type ENTRY
+POST http://localhost:8080/api/v1/employee/2/clock
+
+### 2. Segundo fichaje -> type EXIT
+POST http://localhost:8080/api/v1/employee/2/clock
+
+### 3. Tercero -> vuelve a ENTRY (alterna)
+POST http://localhost:8080/api/v1/employee/2/clock
+
+### 4. Otro empleado no se mezcla: su primero es ENTRY
+POST http://localhost:8080/api/v1/employee/3/clock
+
+### 5. Empleado inexistente -> 404 con tu ProblemDetail
+POST http://localhost:8080/api/v1/employee/999/clock
+
+### 6. Id inválido -> 400 (si tienes @Min(1) en el path)
+POST http://localhost:8080/api/v1/employee/0/clock

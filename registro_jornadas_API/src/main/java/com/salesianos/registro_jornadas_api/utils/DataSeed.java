@@ -54,19 +54,19 @@ public class DataSeed {
         LocalDate anteayer = hoy.minusDays(2);
 
         // Ana: dos jornadas completas. Su último fichaje es SALIDA, así que el siguiente será ENTRADA.
-        clock(ana, anteayer, "08:00", Type.ENTRADA);
-        clock(ana, anteayer, "16:05", Type.SALIDA);
-        clock(ana, ayer, "07:55", Type.ENTRADA);
-        clock(ana, ayer, "15:30", Type.SALIDA);
+        clock(ana, anteayer, "08:00", Type.ENTRY);
+        clock(ana, anteayer, "16:05", Type.EXIT);
+        clock(ana, ayer, "07:55", Type.ENTRY);
+        clock(ana, ayer, "15:30", Type.EXIT);
 
         // Luis: está dentro ahora mismo. Su último fichaje es ENTRADA, así que el siguiente será SALIDA.
-        clock(luis, ayer, "09:00", Type.ENTRADA);
-        clock(luis, ayer, "17:00", Type.SALIDA);
-        clock(luis, hoy, "09:02", Type.ENTRADA);
+        clock(luis, ayer, "09:00", Type.ENTRY);
+        clock(luis, ayer, "17:00", Type.EXIT);
+        clock(luis, hoy, "09:02", Type.ENTRY);
 
         // Carlos: una jornada completa.
-        clock(carlos, ayer, "08:30", Type.ENTRADA);
-        clock(carlos, ayer, "14:30", Type.SALIDA);
+        clock(carlos, ayer, "08:30", Type.ENTRY);
+        clock(carlos, ayer, "14:30", Type.EXIT);
 
         // Marta, Lucía y Pablo no tienen fichajes: su primer fichaje debe ser ENTRADA.
     }

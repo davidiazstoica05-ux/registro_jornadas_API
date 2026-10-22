@@ -32,7 +32,7 @@ public class ClockingService {
         Type newType = Type.ENTRY;
 
 
-        
+
         if (lastClocking.isPresent()) {
             switch (lastClocking.get().getType()) {
                 case ENTRY -> newType = Type.EXIT;
