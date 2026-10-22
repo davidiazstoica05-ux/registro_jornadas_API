@@ -149,7 +149,7 @@ public class EmployeeController {
             @Valid @RequestBody CreateEmployeeDTO employeeDTO
     ){
 
-        return ResponseEntity.status(201).body(
+        return ResponseEntity.status(200).body(
 
                 EmployeeDTO.of(employeeService.updateEmployee(id, employeeDTO))
 

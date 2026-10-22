@@ -397,7 +397,7 @@ PUT http://localhost:8080/api/v1/employee/1
 Content-Type: application/json
 
 {
-  "id": 1,
+  "employeeID": 1,
   "fullName": "Ana García López",
   "position": "Jefa de equipo",
   "salary": 3500.00,
@@ -409,7 +409,7 @@ PUT http://localhost:8080/api/v1/employee/1
 Content-Type: application/json
 
 {
-  "id": 1,
+  "employeeID": 1,
   "fullName": "Ana García López",
   "position": "Jefa de equipo",
   "salary": 3501.00,
@@ -421,7 +421,7 @@ PUT http://localhost:8080/api/v1/employee/1
 Content-Type: application/json
 
 {
-  "id": 1,
+  "employeeID": 1,
   "fullName": "Ana García López",
   "position": "Jefa de equipo",
   "salary": 3000.00,
@@ -434,7 +434,7 @@ PUT http://localhost:8080/api/v1/employee/2
 Content-Type: application/json
 
 {
-  "id": 2,
+  "employeeID": 2,
   "fullName": "Luis Pérez Ruiz",
   "position": "Desarrollador",
   "salary": 3000.00,
@@ -446,7 +446,7 @@ PUT http://localhost:8080/api/v1/employee/6
 Content-Type: application/json
 
 {
-  "id": 6,
+  "employeeID": 6,
   "fullName": "Pablo Ruiz Cano",
   "position": "Community manager",
   "salary": 2200.00,

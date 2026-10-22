@@ -69,9 +69,12 @@ public class EmployeeService {
                                       e.setSalary(employee.salary());
                                       e.setFullName(employee.fullName());
                                       e.setPosition(employee.position());
-                                      e.setDepartment(departmentRepository.findById(employee
-                                                      .departmentId())
-                                                      .orElseThrow(() -> new DepartmentNotFoundException(id)));
+                                      e.setDepartment(employee.departmentId() == null
+                                              ? null
+                                              : departmentRepository.findById(employee.departmentId())
+                                              .orElseThrow(
+                                                      () -> new DepartmentNotFoundException(employee.departmentId())
+                                              ));
                                       return employeeRepository.save(e);
                                   })
                 .orElseThrow(() -> new EmployeeNotFoundException(id));
