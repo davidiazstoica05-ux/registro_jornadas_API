@@ -4,8 +4,10 @@ import com.salesianos.registro_jornadas_api.dto.employee.CreateEmployeeDTO;
 import com.salesianos.registro_jornadas_api.error.BudgetExceededException;
 import com.salesianos.registro_jornadas_api.error.notfound.DepartmentNotFoundException;
 import com.salesianos.registro_jornadas_api.error.notfound.EmployeeNotFoundException;
+import com.salesianos.registro_jornadas_api.model.Clocking;
 import com.salesianos.registro_jornadas_api.model.Department;
 import com.salesianos.registro_jornadas_api.model.Employee;
+import com.salesianos.registro_jornadas_api.repository.ClockingRepository;
 import com.salesianos.registro_jornadas_api.repository.DepartmentRepository;
 import com.salesianos.registro_jornadas_api.repository.EmployeeRepository;
 import jakarta.validation.constraints.Min;
@@ -14,14 +16,17 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
 public class EmployeeService {
 
 
+    private final ClockingRepository clockingRepository;
     private final DepartmentRepository departmentRepository;
     private final EmployeeRepository employeeRepository;
+    private final ClockingService clockingService;
 
     public  Employee getById(Long id) {
 
@@ -86,7 +91,17 @@ public class EmployeeService {
     public void deleteEmployee(@Min(value = 1) Long id) {
 
 
-        employeeRepository.deleteById(id);
+        employeeRepository.findById(id).orElseThrow(() -> new EmployeeNotFoundException(id));
+
+       List<Clocking> allClockings = clockingRepository.findAllByEmployeeIdEmpleadoOrderByMomentDesc(id);
+
+
+       allClockings.forEach(c -> clockingRepository.delete(c));
+
+       employeeRepository.deleteById(id);
+
+
+
 
 
 
