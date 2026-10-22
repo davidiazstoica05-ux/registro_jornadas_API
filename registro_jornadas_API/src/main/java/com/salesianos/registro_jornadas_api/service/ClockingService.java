@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -49,6 +50,22 @@ public class ClockingService {
         return clockingRepository.save(clocking);
     }
 
+    public List<Clocking> getAllClocks(Long employeeID){
+
+
+        employeeRepository.findById(employeeID).orElseThrow(() -> new EmployeeNotFoundException(employeeID));
+
+
+      return clockingRepository.findAllByEmployeeIdEmpleadoOrderByMomentDesc(employeeID);
+
+
+
+
+
+
+
+
+    }
 
 
 

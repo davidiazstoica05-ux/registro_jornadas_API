@@ -15,3 +15,22 @@ POST http://localhost:8080/api/v1/employee/999/clock
 
 ### 6. Id inválido -> 400 (si tienes @Min(1) en el path)
 POST http://localhost:8080/api/v1/employee/0/clock
+
+
+### 1. Ficha dos veces al empleado 2 para tener datos
+POST http://localhost:8080/api/v1/employee/2/clock
+
+###
+POST http://localhost:8080/api/v1/employee/2/clock
+
+### 2. Historial del empleado 2 -> 200, lista con sus fichajes (EXIT primero si usas Desc)
+GET http://localhost:8080/api/v1/employee/2/clockings
+
+### 3. Empleado que existe pero nunca ha fichado -> 200 y []
+GET http://localhost:8080/api/v1/employee/4/clockings
+
+### 4. Empleado inexistente -> 404
+GET http://localhost:8080/api/v1/employee/999/clockings
+
+### 5. Id inválido -> 400
+GET http://localhost:8080/api/v1/employee/0/clockings
