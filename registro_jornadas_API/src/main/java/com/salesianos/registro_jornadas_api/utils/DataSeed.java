@@ -65,9 +65,6 @@ public class DataSeed {
         clock(luis, hoy, "09:02", Type.ENTRY);
 
         // Carlos: una jornada completa.
-        clock(carlos, ayer, "08:30", Type.ENTRY);
-        clock(carlos, ayer, "14:30", Type.EXIT);
-
         // Marta, Lucía y Pablo no tienen fichajes: su primer fichaje debe ser ENTRADA.
     }
 
