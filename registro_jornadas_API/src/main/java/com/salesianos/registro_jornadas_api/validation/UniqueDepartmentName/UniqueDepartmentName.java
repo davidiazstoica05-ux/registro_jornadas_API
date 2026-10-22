@@ -1,4 +1,4 @@
-package com.salesianos.registro_jornadas_api.validation;
+package com.salesianos.registro_jornadas_api.validation.UniqueDepartmentName;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;

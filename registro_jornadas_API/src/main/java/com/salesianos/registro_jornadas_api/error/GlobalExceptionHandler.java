@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.swing.text.html.parser.Entity;
@@ -69,6 +70,17 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+    @ExceptionHandler
+    public ProblemDetail handleBudgetExceeded(BudgetExceededException ex) {
+
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        problem.setTitle("Budget exceeded");
+        problem.setDetail(ex.getMessage());
+        problem.setType(URI.create("https://example.com/errors/budget-exceeded"));
+
+        return problem;
+    }
+
 
     @Override
     protected @Nullable ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
@@ -83,6 +95,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         result.setProperty("invalid-params", subErrors);
 
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(result);
+    }
+
+
+    protected @Nullable ResponseEntity<Object> handleHandlerMethodValidationException(HandlerMethodValidationException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+
+        ProblemDetail result = ProblemDetail
+                .forStatusAndDetail(HttpStatus.BAD_REQUEST, "Validation Error");
+
+        List<ApiValidationSubError> subErrors =
+                ex.getAllErrors().stream()
+                        .map(error -> error instanceof ObjectError objectError
+                                ? ApiValidationSubError.from(objectError)
+                                : new ApiValidationSubError("path", error.getDefaultMessage()))
+                        .toList();
+
+        result.setProperty("invalid-params", subErrors);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(result);

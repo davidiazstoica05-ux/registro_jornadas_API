@@ -2,6 +2,7 @@ package com.salesianos.registro_jornadas_api.dto.employee;
 
 import com.salesianos.registro_jornadas_api.model.Department;
 import com.salesianos.registro_jornadas_api.model.Employee;
+import com.salesianos.registro_jornadas_api.validation.BudgetNotExceed.BudgetNotExceed;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,14 +10,16 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 @Schema(
         name = "EditEmployeeDTO",
         description = "Input DTO to create or update an employee"
 )
-public record EditEmployeeDTO(
+@BudgetNotExceed
+public record CreateEmployeeDTO(
 
+
+        Long employeeID,
 
         @Schema(
                 description = "Employee's full name (at least name and surname)",
