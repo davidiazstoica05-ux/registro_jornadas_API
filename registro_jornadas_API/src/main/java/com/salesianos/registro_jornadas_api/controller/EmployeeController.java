@@ -190,6 +190,16 @@ public class EmployeeController {
 
     }
 
+    @PostMapping("{employeeId}/fichar")
+    public ResponseEntity<EmployeeDTO> clock(){
+
+
+        employeeService.clock();
+
+
+
+    }
+
 
 
 
