@@ -1,9 +1,12 @@
 package com.salesianos.registro_jornadas_api.controller;
 
+import com.salesianos.registro_jornadas_api.dto.clocking.ClockDTO;
+import com.salesianos.registro_jornadas_api.dto.clocking.CreateClockingDTO;
 import com.salesianos.registro_jornadas_api.dto.employee.CreateEmployeeDTO;
 import com.salesianos.registro_jornadas_api.dto.employee.EmployeeDTO;
 import com.salesianos.registro_jornadas_api.model.Department;
 import com.salesianos.registro_jornadas_api.model.Employee;
+import com.salesianos.registro_jornadas_api.service.ClockingService;
 import com.salesianos.registro_jornadas_api.service.EmployeeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -28,7 +31,7 @@ import java.util.List;
 @Tag(name = "Employee Controller", description = "An employee's controller")
 public class EmployeeController {
 
-
+    private final ClockingService clockingService;
     private final EmployeeService employeeService;
 
     @Operation(summary = "Create an employee", description = "Creates an employee. The department is optional: if departmentId is sent, it must exist")
@@ -186,6 +189,20 @@ public class EmployeeController {
         return ResponseEntity.status(201).body(EmployeeDTO.of(employeeService.switchDepartment(employeeId , departmentId)));
 
 
+
+
+    }
+
+    @PostMapping("{employeeId}/clock")
+    public ResponseEntity<ClockDTO> clock(
+
+
+            @Min(value = 1)
+            @PathVariable Long employeeId
+
+    ){
+
+        return ResponseEntity.status(201).body(ClockDTO.of(clockingService.addClock(employeeId)));
 
 
     }
