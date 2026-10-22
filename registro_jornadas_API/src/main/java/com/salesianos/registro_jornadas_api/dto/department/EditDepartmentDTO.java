@@ -13,7 +13,7 @@ import java.math.BigDecimal;
         description = "Input DTO "
 )
 public record EditDepartmentDTO(
-
+        
         @UniqueDepartmentName(message = "{editDepartmentDTO.name.UniqueDepartmentName}")
         @NotBlank(message = "{editDepartmentDTO.name.notBlank}")
         String name,
@@ -27,6 +27,7 @@ public record EditDepartmentDTO(
     public Department to(){
 
         return Department.builder()
+
                 .name(name)
                 .budget(budget)
                 .build();

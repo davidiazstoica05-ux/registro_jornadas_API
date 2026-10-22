@@ -1,7 +1,6 @@
 package com.salesianos.registro_jornadas_api.controller;
 
 import com.salesianos.registro_jornadas_api.dto.department.DepartmentDTO;
-import com.salesianos.registro_jornadas_api.dto.department.DepartmentListDTO;
 import com.salesianos.registro_jornadas_api.dto.department.EditDepartmentDTO;
 import com.salesianos.registro_jornadas_api.model.Department;
 import com.salesianos.registro_jornadas_api.service.DepartmentService;
@@ -33,7 +32,7 @@ public class DepartmentController {
     @Operation(summary = "List departments", description = "Returns every department. If there are none, it returns an empty list")
     @ApiResponse(responseCode = "200", description = "List of departments",
             content = @Content(mediaType = "application/json",
-                    array = @ArraySchema(schema = @Schema(implementation = DepartmentListDTO.class)),
+                    array = @ArraySchema(schema = @Schema(implementation = DepartmentDTO.class)),
                     examples = @ExampleObject(name = "List", value = """
             [
               { "id": 1, "name": "Videogames" },
@@ -41,14 +40,14 @@ public class DepartmentController {
             ]
             """)))
     @GetMapping
-    public ResponseEntity<List<DepartmentListDTO>> getAll(Department d) {
+    public ResponseEntity<List<DepartmentDTO>> getAll(Department d) {
 
         List<Department> result = departmentService.getAllDepartments();
 
         return ResponseEntity.ok(
                 result
                         .stream()
-                        .map(DepartmentListDTO :: of)
+                        .map(DepartmentDTO :: of)
                         .toList());
 
 

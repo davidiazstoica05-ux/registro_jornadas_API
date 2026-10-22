@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 public @interface BudgetNotExceed {
 
 
-    String message() default "The budget of this department is exceeded ";
+    String message() default "{employee.budget.exceeded}";
 
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};

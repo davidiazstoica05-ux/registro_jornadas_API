@@ -10,15 +10,16 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 @Schema(
         name = "EditEmployeeDTO",
         description = "Input DTO to create or update an employee"
 )
 @BudgetNotExceed
-public record EditEmployeeDTO(
+public record CreateEmployeeDTO(
 
+
+        Long employeeID,
 
         @Schema(
                 description = "Employee's full name (at least name and surname)",

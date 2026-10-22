@@ -1,23 +1,19 @@
 package com.salesianos.registro_jornadas_api.service;
 
-import com.salesianos.registro_jornadas_api.dto.employee.EditEmployeeDTO;
-import com.salesianos.registro_jornadas_api.dto.employee.EmployeeDTO;
+import com.salesianos.registro_jornadas_api.dto.employee.CreateEmployeeDTO;
+import com.salesianos.registro_jornadas_api.error.BudgetExceededException;
 import com.salesianos.registro_jornadas_api.error.notfound.DepartmentNotFoundException;
 import com.salesianos.registro_jornadas_api.error.notfound.EmployeeNotFoundException;
 import com.salesianos.registro_jornadas_api.model.Department;
 import com.salesianos.registro_jornadas_api.model.Employee;
 import com.salesianos.registro_jornadas_api.repository.DepartmentRepository;
 import com.salesianos.registro_jornadas_api.repository.EmployeeRepository;
-import com.salesianos.registro_jornadas_api.validation.BudgetNotExceed.BudgetNotExceed;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +32,7 @@ public class EmployeeService {
     }
 
 
-    public Employee addEmployee( EditEmployeeDTO editEmployeeDTO){
+    public Employee addEmployee( CreateEmployeeDTO editEmployeeDTO){
 
 
         Department department = null;
@@ -65,7 +61,7 @@ public class EmployeeService {
 
     }
 
-    public Employee updateEmployee (Long id,  EditEmployeeDTO employee) {
+    public Employee updateEmployee (Long id,  CreateEmployeeDTO employee) {
 
 
         return employeeRepository.findById(id)
@@ -97,29 +93,38 @@ public class EmployeeService {
 
     public Employee switchDepartment (Long employeeId, Long departmentId){
 
-
         return employeeRepository.findById(employeeId)
-                                    .map(e -> {
+                .map(e -> {
 
-                                        if (departmentId == null) {
-                                            e.setDepartment(null);
-                                        } else {
-                                            e.setDepartment(departmentRepository.findById(departmentId)
-                                                    .orElseThrow(() -> new DepartmentNotFoundException(departmentId)
-                                                    )
-                                            );
-                                        }
+                    if (departmentId == null) {
+                        e.setDepartment(null);
+                    } else {
+                        Department department = departmentRepository.findById(departmentId)
+                                .orElseThrow(() -> new DepartmentNotFoundException(departmentId));
 
-                                        return employeeRepository.save(e);
+                        BigDecimal total = employeeRepository
+                                .sumSalariesByDepartmentExcludingEmployee(departmentId, employeeId)
+                                .add(e.getSalary());
 
-                                    })
+                        if (total.compareTo(department.getBudget()) > 0) {
+                            throw new BudgetExceededException(total, department.getBudget());
+                        }
+
+                        e.setDepartment(department);
+                    }
+
+                    return employeeRepository.save(e);
+
+                })
                 .orElseThrow(() -> new EmployeeNotFoundException(employeeId));
-
-
     }
 
 
 
-
-
 }
+
+
+
+
+
+

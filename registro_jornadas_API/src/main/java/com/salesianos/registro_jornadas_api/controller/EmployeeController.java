@@ -1,9 +1,6 @@
 package com.salesianos.registro_jornadas_api.controller;
 
-import com.salesianos.registro_jornadas_api.dto.department.DepartmentDTO;
-import com.salesianos.registro_jornadas_api.dto.department.DepartmentListDTO;
-import com.salesianos.registro_jornadas_api.dto.department.EditDepartmentDTO;
-import com.salesianos.registro_jornadas_api.dto.employee.EditEmployeeDTO;
+import com.salesianos.registro_jornadas_api.dto.employee.CreateEmployeeDTO;
 import com.salesianos.registro_jornadas_api.dto.employee.EmployeeDTO;
 import com.salesianos.registro_jornadas_api.model.Department;
 import com.salesianos.registro_jornadas_api.model.Employee;
@@ -19,7 +16,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -70,7 +66,7 @@ public class EmployeeController {
     @PostMapping
     public ResponseEntity<EmployeeDTO> addEmployee(
             Department department,
-            @Valid @RequestBody EditEmployeeDTO editEmployeeDTO
+            @Valid @RequestBody CreateEmployeeDTO editEmployeeDTO
     ){
 
 
@@ -150,7 +146,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeDTO> updateDepartment(
 
             @PathVariable @Min(value = 1) Long id,
-            @Valid @RequestBody EditEmployeeDTO employeeDTO
+            @Valid @RequestBody CreateEmployeeDTO employeeDTO
     ){
 
         return ResponseEntity.status(201).body(

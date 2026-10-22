@@ -20,4 +20,13 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
         """)
     BigDecimal sumSalariesByDepartment(@Param("departmentId") Long departmentId);
 
+    @Query("""
+        SELECT COALESCE(SUM(e.salary), 0)
+        FROM Employee e
+        WHERE e.department.idDepartment = :departmentId
+        AND e.idEmpleado <> :employeeId
+        """)
+    BigDecimal sumSalariesByDepartmentExcludingEmployee(@Param("departmentId") Long departmentId,
+                                                        @Param("employeeId") Long employeeId);
+
 }
