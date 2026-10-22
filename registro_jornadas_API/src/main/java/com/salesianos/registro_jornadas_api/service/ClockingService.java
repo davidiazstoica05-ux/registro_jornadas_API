@@ -1,5 +1,6 @@
 package com.salesianos.registro_jornadas_api.service;
 
+import com.salesianos.registro_jornadas_api.error.Duplicated.DuplicatedClockingException;
 import com.salesianos.registro_jornadas_api.error.notfound.EmployeeNotFoundException;
 import com.salesianos.registro_jornadas_api.model.Clocking;
 import com.salesianos.registro_jornadas_api.model.Employee;
@@ -22,7 +23,7 @@ public class ClockingService {
 
     private final EmployeeRepository employeeRepository;
 
-    public Clocking addClock(Long employeeID) {
+    public Clocking addClock(Long employeeID, Type type) {
 
         Employee employee = employeeRepository.findById(employeeID)
                 .orElseThrow(() -> new EmployeeNotFoundException(employeeID));
@@ -30,15 +31,24 @@ public class ClockingService {
         Optional<Clocking> lastClocking = clockingRepository
                 .findFirstByEmployeeIdEmpleadoOrderByMomentDesc(employeeID);
 
-        Type newType = Type.ENTRY;
-
-
+        Type lastType = null;
 
         if (lastClocking.isPresent()) {
-            switch (lastClocking.get().getType()) {
-                case ENTRY -> newType = Type.EXIT;
-                case EXIT -> newType = Type.ENTRY;
-            }
+            lastType = lastClocking.get().getType();
+        }
+
+        Type newType;
+
+        if (type == null) {
+            newType = switch (lastType) {
+                case ENTRY -> Type.EXIT;
+                case EXIT -> Type.ENTRY;
+                case null -> Type.ENTRY;
+            };
+        } else if (type == lastType) {
+            throw new DuplicatedClockingException(employeeID, type);
+        } else {
+            newType = type;
         }
 
         Clocking clocking = Clocking.builder()
@@ -50,6 +60,7 @@ public class ClockingService {
         return clockingRepository.save(clocking);
     }
 
+    
     public List<Clocking> getAllClocks(Long employeeID){
 
 

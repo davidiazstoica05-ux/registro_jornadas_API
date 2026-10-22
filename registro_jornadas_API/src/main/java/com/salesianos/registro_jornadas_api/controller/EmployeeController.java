@@ -7,6 +7,7 @@ import com.salesianos.registro_jornadas_api.dto.employee.EmployeeDTO;
 import com.salesianos.registro_jornadas_api.model.Clocking;
 import com.salesianos.registro_jornadas_api.model.Department;
 import com.salesianos.registro_jornadas_api.model.Employee;
+import com.salesianos.registro_jornadas_api.model.Type;
 import com.salesianos.registro_jornadas_api.service.ClockingService;
 import com.salesianos.registro_jornadas_api.service.EmployeeService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -194,19 +195,15 @@ public class EmployeeController {
 
     }
 
-    @PostMapping("{employeeId}/clockings")
+    @PostMapping("/{employeeId}/clockings")
     public ResponseEntity<ClockDTO> clock(
-
-
-            @Min(value = 1)
-            @PathVariable Long employeeId
-
-    ){
-
-        return ResponseEntity.status(201).body(ClockDTO.of(clockingService.addClock(employeeId)));
-
-
+            @PathVariable @Min(value = 1) Long employeeId,
+            @RequestParam(required = false) Type type
+    ) {
+        return ResponseEntity.status(201)
+                .body(ClockDTO.of(clockingService.addClock(employeeId, type)));
     }
+
 
     @GetMapping("/{employeeID}/clockings")
     public ResponseEntity<List<ClockDTO>> getAllClocks(

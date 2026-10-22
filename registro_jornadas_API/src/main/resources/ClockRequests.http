@@ -34,3 +34,31 @@ GET http://localhost:8080/api/v1/employee/999/clockings
 
 ### 5. Id inválido -> 400
 GET http://localhost:8080/api/v1/employee/0/clockings
+
+
+### 1. Sin tipo, primer fichaje -> 201, ENTRY
+POST http://localhost:8080/api/v1/employee/5/clockings
+
+### 2. Sin tipo -> 201, EXIT (alterna)
+POST http://localhost:8080/api/v1/employee/5/clockings
+
+### 3. Forzando EXIT cuando el último fue EXIT -> 409
+POST http://localhost:8080/api/v1/employee/5/clockings?type=EXIT
+
+### 4. Forzando ENTRY (distinto del último) -> 201, ENTRY
+POST http://localhost:8080/api/v1/employee/5/clockings?type=ENTRY
+
+### 5. Forzando ENTRY otra vez -> 409
+POST http://localhost:8080/api/v1/employee/5/clockings?type=ENTRY
+
+### 6. Tipo que no existe en el enum -> 400
+POST http://localhost:8080/api/v1/employee/5/clockings?type=LUNCH
+
+### 7. Empleado inexistente -> 404
+POST http://localhost:8080/api/v1/employee/999/clockings
+
+### 8. Id inválido -> 400
+POST http://localhost:8080/api/v1/employee/0/clockings
+
+### 9. Historial: 3 fichajes (ENTRY, EXIT, ENTRY), sin los 409
+GET http://localhost:8080/api/v1/employee/5/clockings
