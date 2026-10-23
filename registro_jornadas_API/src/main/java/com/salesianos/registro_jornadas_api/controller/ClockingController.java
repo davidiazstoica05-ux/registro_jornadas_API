@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ProblemDetail;
@@ -22,6 +23,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/{employeeId}/clockings")
 @RequiredArgsConstructor
+@Tag(name = "Clocking Controller", description = "A clocking's controller")
+
 public class ClockingController {
 
 
