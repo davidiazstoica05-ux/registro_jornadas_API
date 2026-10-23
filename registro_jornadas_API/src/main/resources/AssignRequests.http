@@ -1,0 +1,187 @@
+
+### ASSIGN
+### Assign department 2 to employee 1 (200)
+PUT http://localhost:8080/api/v1/employee/1/department/2
+
+### Remove the department from employee 1 (200, department null)
+PUT http://localhost:8080/api/v1/employee/1/department
+
+### Error: employee that does not exist (404)
+PUT http://localhost:8080/api/v1/employee/999/department/2
+
+### Error: department that does not exist (404)
+PUT http://localhost:8080/api/v1/employee/1/department/999
+
+### Error: invalid employee id (400)
+PUT http://localhost:8080/api/v1/employee/0/department/2
+
+
+### BudgetNotExceed
+
+### HU-07: pruebas del presupuesto
+### Se asume la BD recien creada por el DataSeed (ddl-auto=create-drop): reinicia la app antes de empezar.
+### Desarrollo (id 1): budget 10000, salarios 9500 -> caben 500 mas
+### Recursos Humanos (id 2): budget 6000, salarios 5300 -> caben 700 mas
+### Marketing (id 3): budget 5000, sin empleados
+### Pablo (id 6): 2200, sin departamento. Ana (id 1): 3500, en Desarrollo.
+### Ejecuta en este orden: cada exito consume presupuesto.
+
+### 1. No cabe por 1 euro (400, mensaje del .properties en invalid-params)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Nuria Campos Gil",
+  "position": "Tester",
+  "salary": 501.00,
+  "departmentId": 1
+}
+
+### 2. Cabe EXACTAMENTE en el limite (201). Si da 400, el <= 0 esta mal
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Nuria Campos Gil",
+  "position": "Tester",
+  "salary": 500.00,
+  "departmentId": 1
+}
+
+### 3. Desarrollo ya esta lleno: 1 euro mas no cabe (400)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Raul Ortega Sanz",
+  "position": "Tester",
+  "salary": 1.00,
+  "departmentId": 1
+}
+
+### 4. Sin departamento (201, no hay presupuesto que comprobar)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Raul Ortega Sanz",
+  "position": "Tester",
+  "salary": 99999.00
+}
+
+### 5. Departamento que no existe (404 del servicio, no 400)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Raul Ortega Sanz",
+  "position": "Tester",
+  "salary": 1000.00,
+  "departmentId": 999
+}
+
+### 6. Salario negativo con departamento (400, solo el error del @Positive, sin duplicados)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Raul Ortega Sanz",
+  "position": "Tester",
+  "salary": -5.00,
+  "departmentId": 1
+}
+
+### 7. Asignar a Pablo (2200) a RRHH, donde caben 700 (409)
+PUT http://localhost:8080/api/v1/employee/6/department/2
+
+### 8. Asignar a Pablo a Marketing, donde caben de sobra (200)
+PUT http://localhost:8080/api/v1/employee/6/department/3
+
+### 9. Quitar el departamento a Pablo (200, department = "Sin departamento")
+PUT http://localhost:8080/api/v1/employee/6/department
+
+### 10. Reasignar a Ana a su MISMO departamento, ya lleno (200).
+### Prueba que la consulta excluye al propio empleado; si da 409, la estas contando dos veces.
+PUT http://localhost:8080/api/v1/employee/1/department/1
+
+### 11. Asignar a un empleado que no existe (404)
+PUT http://localhost:8080/api/v1/employee/999/department/1
+
+### 12. Asignar a un departamento que no existe (404)
+PUT http://localhost:8080/api/v1/employee/6/department/999
+
+### ===== Editar empleado (PUT con "id" en el body) =====
+### Sigue despues de la 12. Estado: Desarrollo lleno (Ana 3500 + Luis 3000 + Marta 3000 + Nuria 500 = 10000).
+
+### 13. Ana: solo cambia el cargo, mismo salario y departamento (200, atajo del profesor)
+PUT http://localhost:8080/api/v1/employee/1
+Content-Type: application/json
+
+{
+  "employeeID": 1,
+  "fullName": "Ana García López",
+  "position": "Jefa de equipo",
+  "salary": 3500.00,
+  "departmentId": 1
+}
+
+### 14. Ana: sube 1 euro en un departamento lleno (400). Sin Ana: 6500 + 3501 = 10001
+PUT http://localhost:8080/api/v1/employee/1
+Content-Type: application/json
+
+{
+  "employeeID": 1,
+  "fullName": "Ana García López",
+  "position": "Jefa de equipo",
+  "salary": 3501.00,
+  "departmentId": 1
+}
+
+### 15. Ana: baja el salario (200). Sin Ana: 6500 + 3000 = 9500
+PUT http://localhost:8080/api/v1/employee/1
+Content-Type: application/json
+
+{
+  "employeeID": 1,
+  "fullName": "Ana García López",
+  "position": "Jefa de equipo",
+  "salary": 3000.00,
+  "departmentId": 1
+}
+
+### 16. Luis: mismo salario pero cambia a RRHH, donde no cabe (400). 5300 + 3000 = 8300 > 6000
+### Demuestra que tambien se comprueba el cambio de departamento, no solo el de salario.
+PUT http://localhost:8080/api/v1/employee/2
+Content-Type: application/json
+
+{
+  "employeeID": 2,
+  "fullName": "Luis Pérez Ruiz",
+  "position": "Desarrollador",
+  "salary": 3000.00,
+  "departmentId": 2
+}
+
+### 17. Pablo (sin departamento) pasa a Marketing editando (200)
+PUT http://localhost:8080/api/v1/employee/6
+Content-Type: application/json
+
+{
+  "employeeID": 6,
+  "fullName": "Pablo Ruiz Cano",
+  "position": "Community manager",
+  "salary": 2200.00,
+  "departmentId": 3
+}
+
+### 18. Limitacion: PUT de Ana SIN "id" en el body (400 falso: lo cuenta como alta, 9500 + 3000).
+### Si anades la comprobacion de que el id del body coincide con el de la URL, aqui deberia salir ese 400.
+PUT http://localhost:8080/api/v1/employee/1
+Content-Type: application/json
+
+{
+  "fullName": "Ana García López",
+  "position": "Jefa de equipo",
+  "salary": 3000.00,
+  "departmentId": 1
+}
