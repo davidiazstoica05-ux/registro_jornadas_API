@@ -1,0 +1,192 @@
+
+### EMPLOYEES REQUESTS
+
+### GET all employees (200)
+GET http://localhost:8080/api/v1/employee
+
+### GET an employee by id (200)
+GET http://localhost:8080/api/v1/employee/1
+
+### Error: GET an employee that does not exist (404)
+GET http://localhost:8080/api/v1/employee/999
+
+### Error: GET with an invalid id (400)
+GET http://localhost:8080/api/v1/employee/0
+
+### POST a new employee (201)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Ana Pérez",
+  "position": "Developer",
+  "salary": 2500.00,
+  "departmentId": 1
+}
+
+### POST an employee without a department (201, department is optional)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Luis García",
+  "position": "Intern",
+  "salary": 1200.00
+}
+
+### Error: POST with an empty full name (400)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "",
+  "position": "Developer",
+  "salary": 2500.00,
+  "departmentId": 1
+}
+
+### Error: POST with only one word as the name (400, if you use the regex)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Ana",
+  "position": "Developer",
+  "salary": 2500.00,
+  "departmentId": 1
+}
+
+### Error: POST with an empty position (400)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Ana Pérez",
+  "position": "",
+  "salary": 2500.00,
+  "departmentId": 1
+}
+
+### Error: POST with a negative salary (400)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Ana Pérez",
+  "position": "Developer",
+  "salary": -100,
+  "departmentId": 1
+}
+
+### Error: POST without salary (400)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Ana Pérez",
+  "position": "Developer",
+  "departmentId": 1
+}
+
+### Error: POST with several wrong fields (400, several errors)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "",
+  "position": "",
+  "salary": -1
+}
+
+### Error: POST with a department that does not exist (404)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Ana Pérez",
+  "position": "Developer",
+  "salary": 2500.00,
+  "departmentId": 999
+}
+
+### Error: POST with a malformed JSON (400)
+POST http://localhost:8080/api/v1/employee
+Content-Type: application/json
+
+{
+  "fullName": "Ana Pérez",
+  "salary":
+}
+
+### PUT edit an employee (200)
+PUT http://localhost:8080/api/v1/employee/1
+Content-Type: application/json
+
+{
+  "fullName": "Ana Pérez Ruiz",
+  "position": "Senior Developer",
+  "salary": 3000.00,
+  "departmentId": 1
+}
+
+### PUT without department: it removes it (200)
+PUT http://localhost:8080/api/v1/employee/1
+Content-Type: application/json
+
+{
+  "fullName": "Ana Pérez Ruiz",
+  "position": "Senior Developer",
+  "salary": 3000.00
+}
+
+### Error: PUT with an empty full name (400)
+PUT http://localhost:8080/api/v1/employee/1
+Content-Type: application/json
+
+{
+  "fullName": "",
+  "position": "Senior Developer",
+  "salary": 3000.00,
+  "departmentId": 1
+}
+
+### Error: PUT with a negative salary (400)
+PUT http://localhost:8080/api/v1/employee/1
+Content-Type: application/json
+
+{
+  "fullName": "Ana Pérez Ruiz",
+  "position": "Senior Developer",
+  "salary": -5,
+  "departmentId": 1
+}
+
+### Error: PUT an employee that does not exist (404)
+PUT http://localhost:8080/api/v1/employee/999
+Content-Type: application/json
+
+{
+  "fullName": "Ana Pérez Ruiz",
+  "position": "Senior Developer",
+  "salary": 3000.00,
+  "departmentId": 1
+}
+
+### Error: PUT with a department that does not exist (404)
+PUT http://localhost:8080/api/v1/employee/1
+Content-Type: application/json
+
+{
+  "fullName": "Ana Pérez Ruiz",
+  "position": "Senior Developer",
+  "salary": 3000.00,
+  "departmentId": 999
+}
+
+### DELETE an employee (204)
+DELETE http://localhost:8080/api/v1/employee/2
+
+### Error: DELETE an employee that does not exist (404)
+DELETE http://localhost:8080/api/v1/employee/999
+
+
