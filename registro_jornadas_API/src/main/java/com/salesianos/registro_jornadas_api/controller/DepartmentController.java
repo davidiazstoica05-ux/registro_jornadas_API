@@ -35,12 +35,12 @@ public class DepartmentController {
                     array = @ArraySchema(schema = @Schema(implementation = DepartmentDTO.class)),
                     examples = @ExampleObject(name = "List", value = """
             [
-              { "id": 1, "name": "Videogames" },
-              { "id": 2, "name": "Marketing" }
+              { "name": "Desarrollo", "budget": 10000.00 },
+              { "name": "Marketing", "budget": 6000.00 }
             ]
             """)))
     @GetMapping
-    public ResponseEntity<List<DepartmentDTO>> getAll(Department d) {
+    public ResponseEntity<List<DepartmentDTO>> getAll() {
 
         List<Department> result = departmentService.getAllDepartments();
 
@@ -58,17 +58,19 @@ public class DepartmentController {
             @ApiResponse(responseCode = "200", description = "Department found",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = DepartmentDTO.class),
                             examples = @ExampleObject(value = """
-                { "id": 1, "name": "Videogames", "budget": 100.0 }
+                { "name": "Desarrollo", "budget": 10000.00 }
                 """))),
+            @ApiResponse(responseCode = "400", description = "The id must be 1 or greater",
+                    content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDetail.class))),
             @ApiResponse(responseCode = "404", description = "Department not found",
                     content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDetail.class),
                             examples = @ExampleObject(value = """
                 {
                   "type": "https://example.com/errors/not-found",
-                  "title": "Resource not found",
+                  "title": "Recurso no encontrado",
                   "status": 404,
-                  "detail": "Department with id 99 does not exist",
-                  "instance": "/tempus/api/department/99"
+                  "detail": "Department not found with id 99",
+                  "instance": "/api/v1/department/99"
                 }
                 """)))
     })
@@ -86,14 +88,14 @@ public class DepartmentController {
     @ApiResponses({
             @ApiResponse(responseCode = "201", description = "Department created",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = DepartmentDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid data",
+            @ApiResponse(responseCode = "400", description = "Invalid data or repeated name",
                     content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDetail.class),
                             examples = @ExampleObject(value = """
                 {
                   "title": "Bad Request",
                   "status": 400,
                   "detail": "Validation Error",
-                  "instance": "/tempus/api/department",
+                  "instance": "/api/v1/department",
                   "invalid-params": [
                     { "object": "editDepartmentDTO", "message": "The name is required", "field": "name", "rejectedValue": "" }
                   ]
@@ -105,12 +107,12 @@ public class DepartmentController {
 
             @Valid @RequestBody EditDepartmentDTO departmentDTO
 
-            ){
+    ){
 
         return ResponseEntity.status(201)
-                            .body(DepartmentDTO.of(departmentService
-                                    .addDepartment(departmentDTO))
-                            );
+                .body(DepartmentDTO.of(departmentService
+                        .addDepartment(departmentDTO))
+                );
 
     }
 
@@ -118,7 +120,7 @@ public class DepartmentController {
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Department updated",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = DepartmentDTO.class))),
-            @ApiResponse(responseCode = "400", description = "Invalid data",
+            @ApiResponse(responseCode = "400", description = "Invalid data, invalid id or repeated name",
                     content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDetail.class))),
             @ApiResponse(responseCode = "404", description = "Department not found",
                     content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDetail.class)))
@@ -130,26 +132,28 @@ public class DepartmentController {
             @Valid @RequestBody EditDepartmentDTO department
     ){
 
-    return ResponseEntity.status(201).body(
+        return ResponseEntity.ok(
 
-            DepartmentDTO.of(departmentService.updateDepartment(id, department))
+                DepartmentDTO.of(departmentService.updateDepartment(id, department))
 
-    );
+        );
 
     }
 
-    @Operation(summary = "Delete a department", description = "Deletes the department with the given id")
+    @Operation(summary = "Delete a department", description = "Deletes the department with the given id. Its employees are left without department")
     @ApiResponses({
             @ApiResponse(responseCode = "204", description = "Department deleted"),
+            @ApiResponse(responseCode = "400", description = "The id must be 1 or greater",
+                    content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDetail.class))),
             @ApiResponse(responseCode = "404", description = "Department not found",
                     content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ProblemDetail.class)))
     })
     @DeleteMapping("{id}")
-    public ResponseEntity<DepartmentDTO> deleteDepartment(
+    public ResponseEntity<Void> deleteDepartment(
 
             @PathVariable @Min(value = 1) Long id
 
-            ){
+    ){
 
 
         departmentService.deleteDepartment(id);
