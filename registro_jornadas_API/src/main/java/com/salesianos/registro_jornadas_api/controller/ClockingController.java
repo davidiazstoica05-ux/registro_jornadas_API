@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/{employeeId}/clockings")
+@RequestMapping("/api/v1/employee/{employeeId}/clockings")
 @RequiredArgsConstructor
 @Tag(name = "Clocking Controller", description = "A clocking's controller")
 
