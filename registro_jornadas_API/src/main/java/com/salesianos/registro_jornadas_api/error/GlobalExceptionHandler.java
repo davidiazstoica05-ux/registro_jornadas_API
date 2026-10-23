@@ -47,7 +47,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         problem.setTitle("The clocking can not be duplicated");
 
         problem.setDetail(ex.getMessage());
-        problem.setType(URI.create("https://example.com/errors/not-found"));
+        problem.setType(URI.create("https://example.com/errors/duplicated-clocking"));
 
         return problem;
 
