@@ -4,6 +4,7 @@ import com.salesianos.registro_jornadas_api.model.Department;
 import com.salesianos.registro_jornadas_api.validation.UniqueDepartmentName.UniqueDepartmentName;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 import java.math.BigDecimal;
@@ -18,7 +19,7 @@ public record EditDepartmentDTO(
         @NotBlank(message = "{editDepartmentDTO.name.notBlank}")
         String name,
 
-
+        @NotNull(message = "{editDepartmentDTO.budget.notNull}")
         @Positive (message = "{editDepartmentDTO.name.positive}")
         BigDecimal budget
 ){
