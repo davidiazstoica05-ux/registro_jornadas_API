@@ -4,26 +4,21 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.salesianos.registro_jornadas_api.error.Duplicated.DuplicatedClockingException;
 import com.salesianos.registro_jornadas_api.error.notfound.DepartmentNotFoundException;
 import com.salesianos.registro_jornadas_api.error.notfound.EmployeeNotFoundException;
-import jakarta.persistence.EntityExistsException;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ElementKind;
 import jakarta.validation.Path;
 import lombok.Builder;
 import org.jspecify.annotations.Nullable;
-import org.springframework.boot.autoconfigure.info.ProjectInfoProperties;
 import org.springframework.http.*;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import javax.swing.text.html.parser.Entity;
 import java.net.URI;
 import java.util.List;
 
@@ -35,7 +30,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     public ProblemDetail handleDepartmentNotFound(DepartmentNotFoundException ex){
 
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
-        problem.setTitle("Recurso no encontrado");
+        problem.setTitle("Resource not found");
 
         //El texto viaja en todo momento  en la excepcion, es aqui donde se muestra
         problem.setDetail(ex.getMessage());
@@ -48,11 +43,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler
     public  ProblemDetail handleDuplicatedClocking(DuplicatedClockingException ex){
 
-        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
-        problem.setTitle("Recurso no encontrado");
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.CONFLICT);
+        problem.setTitle("The clocking can not be duplicated");
 
         problem.setDetail(ex.getMessage());
-        problem.setType(URI.create("https://example.com/errors/not-found"));
+        problem.setType(URI.create("https://example.com/errors/duplicated-clocking"));
 
         return problem;
 
@@ -61,7 +56,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler
     public  ProblemDetail handleEmployeeNotFoundException(EmployeeNotFoundException ex){
         ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
-        problem.setTitle("Recurso no encontrado");
+        problem.setTitle("Resource not found");
 
         problem.setDetail(ex.getMessage());
         problem.setType(URI.create("https://example.com/errors/not-found"));
